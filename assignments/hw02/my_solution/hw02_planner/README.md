@@ -38,6 +38,10 @@ ros2 run hw02_sim check_navigation --layout mixed --timeout 300
 ros2 run hw02_planner planner_node --ros-args -p seed:=0 -p run_name:=mixed -p figure_dir:=assignments/hw02/my_solution/figures
 ```
 
+If anything else may be running a simulation on this machine (another homework,
+another session), first run `export ROS_DOMAIN_ID=57 GZ_PARTITION=hw02_$USER` in
+all three terminals. Otherwise two `go_to` servers can answer and goals fail at random.
+
 Restart the simulation for every layout/seed. With `figure_dir` set, the node saves
 `<run>_seed<N>_plan.png`, `<run>_seed<N>_cspace.png` and `<run>_seed<N>_summary.json`.
 

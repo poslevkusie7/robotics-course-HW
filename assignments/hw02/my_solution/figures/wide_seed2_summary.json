@@ -1,0 +1,25 @@
+{
+  "run": "wide",
+  "seed": 2,
+  "outcome": "completed",
+  "sample_schedule": [
+    1000,
+    2000,
+    5000
+  ],
+  "neighbours_per_node": 12,
+  "max_edge_length_m": 1.5,
+  "attempts": [
+    {
+      "samples_drawn": 1000,
+      "nodes": 621,
+      "edges": 4254,
+      "seconds": 0.07738208305090666,
+      "found_path": true
+    }
+  ],
+  "planning_seconds": 0.077,
+  "path_length_m": 6.065,
+  "waypoints": 16,
+  "waypoints_reached": 15
+}

@@ -1,0 +1,39 @@
+{
+  "run": "blocked",
+  "seed": 0,
+  "outcome": "no_path_found",
+  "sample_schedule": [
+    1000,
+    2000,
+    5000
+  ],
+  "neighbours_per_node": 12,
+  "max_edge_length_m": 1.5,
+  "attempts": [
+    {
+      "samples_drawn": 1000,
+      "nodes": 660,
+      "edges": 4572,
+      "seconds": 0.08204374997876585,
+      "found_path": false
+    },
+    {
+      "samples_drawn": 2000,
+      "nodes": 1363,
+      "edges": 9379,
+      "seconds": 0.16413262498099357,
+      "found_path": false
+    },
+    {
+      "samples_drawn": 5000,
+      "nodes": 3409,
+      "edges": 23171,
+      "seconds": 0.4057163340039551,
+      "found_path": false
+    }
+  ],
+  "planning_seconds": 0.652,
+  "path_length_m": null,
+  "waypoints": 0,
+  "waypoints_reached": 0
+}

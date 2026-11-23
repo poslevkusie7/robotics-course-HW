@@ -1,0 +1,32 @@
+{
+  "run": "mixed",
+  "seed": 0,
+  "outcome": "completed",
+  "sample_schedule": [
+    1000,
+    2000,
+    5000
+  ],
+  "neighbours_per_node": 12,
+  "max_edge_length_m": 1.5,
+  "attempts": [
+    {
+      "samples_drawn": 1000,
+      "nodes": 546,
+      "edges": 3788,
+      "seconds": 0.0686382909771055,
+      "found_path": false
+    },
+    {
+      "samples_drawn": 2000,
+      "nodes": 1115,
+      "edges": 7656,
+      "seconds": 0.13355516700539738,
+      "found_path": true
+    }
+  ],
+  "planning_seconds": 0.202,
+  "path_length_m": 6.811,
+  "waypoints": 24,
+  "waypoints_reached": 23
+}

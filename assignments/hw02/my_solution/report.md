@@ -121,7 +121,9 @@ cd assignments/hw02/my_solution && colcon build --symlink-install --base-paths h
 source assignments/hw02/my_solution/install/setup.zsh
 ```
 
-Each run uses a fresh world, with the observer started before the planner:
+Each run uses a fresh world, with the observer started before the planner. On a
+machine where other simulations may be running, first give every terminal the
+same private domain, e.g. `export ROS_DOMAIN_ID=57 GZ_PARTITION=hw02_$USER`.
 
 ```bash
 ros2 launch hw02_sim simulation.launch.py layout:=mixed gui:=false
@@ -137,15 +139,56 @@ tests passed (9 geometry, 12 motion helper).
 
 ## 6. Results
 
-RESULTS_TABLE
+All runs used k = 12, maximum edge 1.5 m and the 1000 → 2000 → 5000 schedule.
 
-Sample counts are the samples drawn in the successful (or last) attempt; nodes
-include start and goal. Planning time is wall-clock time for all attempts.
-"Observer" is the independent `check_navigation` verdict (arrival within 0.10 m,
-stopped for two simulated seconds, no wall/pillar contact; for `blocked`,
-`no_path_found` and no movement).
+| Layout | Seed | Attempts (samples) | Retries | Nodes | Edges | Planning time | Path length | Waypoints | Execution | Observer |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `wide` | 0 | 1000 | 0 | 579 | 4024 | 0.07 s | 7.48 m | 19 | completed, 90 s | PASS (1.9 cm) |
+| `wide` | 1 | 1000 | 0 | 585 | 4029 | 0.08 s | 6.16 m | 17 | completed, 78 s | PASS (1.9 cm) |
+| `wide` | 2 | 1000 | 0 | 621 | 4254 | 0.08 s | 6.07 m | 15 | completed, 71 s | PASS (1.9 cm) |
+| `mixed` | 0 | 1000 → 2000 | 1 | 1115 | 7656 | 0.20 s | 6.81 m | 23 | completed, 100 s | PASS (1.9 cm) |
+| `mixed` | 1 | 1000 | 0 | 535 | 3749 | 0.07 s | 6.89 m | 16 | completed, 80 s | PASS (1.9 cm) |
+| `mixed` | 2 | 1000 → 2000 | 1 | 1124 | 7771 | 0.22 s | 6.83 m | 22 | completed, 98 s | PASS (1.9 cm) |
+| `blocked` | 0 | 1000 → 2000 → 5000 | 2 | 3409 | 23171 | 0.65 s | — | 0 | not started | PASS (no path, no movement) |
 
-FIGURES
+* **Nodes / edges** are for the last attempt; nodes include start and goal (a
+  draw of 1000 samples keeps the 53–66 % that are free).
+* **Planning time** is wall-clock time for all attempts (sampling, edge checks
+  and A*), not counting figure saving.
+* **Waypoints** are the `go_to` requests sent (path nodes minus the start).
+* **Execution** is wall time from the first `go_to` to `completed`
+  (Gazebo real-time factor 1).
+* **Observer** is the independent `check_navigation` verdict: arrival within
+  0.10 m (the measured final error is shown), stopped for two simulated seconds, no
+  wall/pillar contact. For `blocked` it means `no_path_found` was published and
+  the robot stayed within 0.03 m of the start.
+
+`wide` always succeeds with 1000 samples. `mixed` needed a retry for seeds 0 and 2
+because 1000 samples did not produce an edge through one of the narrow gaps.
+`wide` seed 0 took a longer route (7.48 m) through the bottom gaps (y ≈ 1.2),
+because its roadmap had no connected route through the middle gaps near y = 3,
+which the other seeds used. A* is optimal only within the roadmap it is given.
+
+**A note on one failed attempt.** The first `mixed` seed 2 run failed at waypoint 3
+with an empty helper message, and a repeat failed at waypoint 2 with "Goal rejected".
+Gazebo's log showed *"Found additional publishers on /clock"*: another simulation
+was running on the same machine in the default ROS domain, so two `go_to` action
+servers were answering. The node handled this as required. It stopped the
+sequence, published `failed`, and sent no more goals. Repeating the run with its own
+`ROS_DOMAIN_ID` and `GZ_PARTITION` (as the setup guide recommends on shared
+machines) gave the result in the table, with an identical plan.
+
+### Figures
+
+Each figure shows physical obstacles (black), the extra area closed by the robot
+radius (grey), roadmap nodes and accepted edges (blue), start, goal and the A*
+path (orange). Figures for seeds 1 and 2 are in [`figures/`](figures/).
+
+![wide, seed 0](figures/wide_seed0_plan.png)
+
+![mixed, seed 0](figures/mixed_seed0_plan.png)
+
+![blocked, seed 0](figures/blocked_seed0_plan.png)
 
 ## 7. Sampling limitations and the blocked room
 
