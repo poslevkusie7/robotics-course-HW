@@ -44,5 +44,5 @@ Restart the simulation for every layout/seed. With `figure_dir` set, the node sa
 ## Tests
 
 ```bash
-PYTHONPATH=assignments/hw02/my_solution/hw02_planner python -m pytest -q assignments/hw02/my_solution/hw02_planner/test
+PYTHONPATH=assignments/hw02/my_solution/hw02_planner:$PYTHONPATH python -m pytest -q assignments/hw02/my_solution/hw02_planner/test
 ```
