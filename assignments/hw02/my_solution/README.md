@@ -1,5 +1,9 @@
 # Your HW2 implementation
 
+The student planner is in `hw02_planner/`. See [report.md](report.md) for its
+algorithm, parameters, exact build/run commands and pending validation results.
+The setup examples below remain unchanged.
+
 This directory contains only two setup examples. Complete the
 [installation guide](../environment/README.md) before implementing your planner.
 
